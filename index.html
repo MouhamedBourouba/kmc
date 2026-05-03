@@ -68,12 +68,11 @@
       left: 0;
       right: 0;
       z-index: 1000;
-      padding: 0 1rem;
+      padding: 0 2rem;
       background: linear-gradient(180deg, rgba(10, 10, 10, .97) 0%, rgba(10, 10, 10, 0) 100%);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(255, 255, 255, .04);
       transition: background .3s;
-      overflow: hidden;
     }
 
     .navbar-wrap.scrolled {
@@ -88,7 +87,6 @@
       justify-content: space-between;
       height: 70px;
       gap: 2rem;
-      overflow: hidden;
     }
 
     /* Logo */
@@ -1316,8 +1314,8 @@
     }
 
     @media (max-width: 768px) {
-      .navbar {
-        height: 60px;
+      html, body {
+        overflow-x: hidden;
       }
 
       .nav-links {
@@ -1333,7 +1331,7 @@
       }
 
       .hero-left {
-        padding-top: 4rem;
+        padding-top: 5rem;
       }
 
       .hero-stats {
