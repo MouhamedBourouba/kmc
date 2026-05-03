@@ -22,6 +22,7 @@
       --accent: #e8461a;
       --accent2: #ff6b3d;
       --gold: #c9a84c;
+      --nav-h: 70px;
 
       --font-display: 'Bebas Neue', sans-serif;
       --font-cond: 'Barlow Condensed', sans-serif;
@@ -68,6 +69,7 @@
       left: 0;
       right: 0;
       z-index: 1000;
+      height: var(--nav-h);
       padding: 0 2rem;
       background: linear-gradient(180deg, rgba(10, 10, 10, .97) 0%, rgba(10, 10, 10, 0) 100%);
       backdrop-filter: blur(12px);
@@ -85,7 +87,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 70px;
+      height: 100%;
       gap: 2rem;
     }
 
@@ -244,7 +246,7 @@
     .mobile-menu {
       display: none;
       position: fixed;
-      top: 70px;
+      top: var(--nav-h);
       left: 0;
       right: 0;
       background: rgba(10, 10, 10, .98);
@@ -272,27 +274,81 @@
       border-bottom: 1px solid var(--border);
     }
 
-
-
     /* ── HERO ─────────────────────────────────────────── */
-#home {
-       min-height: 100vh;
-       height: 100vh;
-       display: grid;
-       grid-template-columns: 1fr 1fr;
-       position: relative;
-       overflow: hidden;
-       padding-top: 70px;
-       padding-left: 2rem;
-       padding-right: 2rem;
-     }
+    /*
+      FIX: Use flex instead of grid so the layout is intrinsic.
+      Push content below navbar with padding-top = nav height.
+      Remove fixed height: 100vh which caused overlap.
+      Use min-height: calc(100vh - var(--nav-h)) on the content column
+      so it fills the viewport without fighting the navbar.
+    */
+    #home {
+      display: flex;
+      flex-direction: row;
+      padding-top: var(--nav-h);
+      /* push content below fixed navbar */
+      position: relative;
+      overflow: hidden;
+    }
+
+    #home::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: var(--dark);
+      clip-path: polygon(0 80px, 100% 0, 100% 80px);
+      z-index: 3;
+    }
 
     .hero-left {
+      flex: 1 1 50%;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      padding: 4rem 2rem 6rem 2rem;
+      min-height: calc(100vh - var(--nav-h));
       position: relative;
       z-index: 2;
+    }
+
+    .hero-right {
+      flex: 1 1 50%;
+      position: relative;
+      overflow: hidden;
+      /* Max height tied to the viewport minus the navbar so the image never bleeds */
+      max-height: calc(100vh - var(--nav-h));
+    }
+
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      max-height: calc(100vh - var(--nav-h));
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      filter: grayscale(30%) brightness(.8);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--black) 0%, transparent 40%);
+    }
+
+    .hero-label {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      font-family: var(--font-cond);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .4);
+      writing-mode: vertical-rl;
     }
 
     .hero-badge {
@@ -327,7 +383,6 @@
 
     .hero-title em {
       font-style: normal;
-      color: var(--accent);
       -webkit-text-stroke: 1px var(--accent);
       color: transparent;
     }
@@ -417,51 +472,6 @@
       text-transform: uppercase;
       color: var(--steel);
       margin-top: .25rem;
-    }
-
-    /* Hero right — image panel */
-    .hero-right {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(30%) brightness(.8);
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, var(--black) 0%, transparent 40%);
-    }
-
-    .hero-label {
-      position: absolute;
-      bottom: 2rem;
-      right: 2rem;
-      font-family: var(--font-cond);
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, .4);
-      writing-mode: vertical-rl;
-    }
-
-    /* Diagonal cut */
-    #home::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      right: 0;
-      height: 80px;
-      background: var(--dark);
-      clip-path: polygon(0 80px, 100% 0, 100% 80px);
-      z-index: 3;
     }
 
     /* ── SECTION BASE ────────────────────────────────── */
@@ -939,7 +949,6 @@
       color: var(--white);
     }
 
-
     /* ── TESTIMONIALS ────────────────────────────────── */
     #testimonials {
       background: var(--black);
@@ -1035,18 +1044,6 @@
       color: var(--accent);
       border: 1px solid var(--accent);
       padding: 0.2rem 0.6rem;
-    }
-
-    @media (max-width: 1024px) {
-      .testimonials-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .testimonials-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
     /* ── QUOTE FORM ──────────────────────────────────── */
@@ -1276,43 +1273,47 @@
       color: var(--accent);
     }
 
-/* ── RESPONSIVE ──────────────────────────────────── */
-     @media (max-width: 1024px) {
-       #home {
-         grid-template-columns: 1fr;
-         min-height: 100vh;
-         height: 100vh;
-         padding-top: 70px;
-       }
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 1024px) {
+      #home {
+        flex-direction: column;
+      }
 
-       .hero-right {
-         display: none;
-       }
+      .hero-left {
+        flex: none;
+        width: 100%;
+        min-height: 0;
+        padding: 3rem 2rem 5rem;
+        /* On smaller screens hero fills at least the visible viewport area */
+        min-height: calc(100svh - var(--nav-h));
+        justify-content: center;
+      }
 
-       .about-grid,
-       .machine-display,
-       .quote-grid,
-       .contact-grid {
-         grid-template-columns: 1fr;
-         gap: 2.5rem;
-       }
+      .hero-right {
+        display: none;
+      }
 
-       .services-grid {
-         grid-template-columns: 1fr 1fr;
+      .about-grid,
+      .machine-display,
+      .quote-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr 1fr;
       }
 
       .portfolio-grid {
         grid-template-columns: 1fr 1fr;
       }
-
-      .machines-header-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
     }
 
-@media (max-width: 768px) {
-      html, body {
+    @media (max-width: 768px) {
+
+      html,
+      body {
         overflow-x: hidden;
       }
 
@@ -1329,7 +1330,7 @@
       }
 
       .hero-left {
-        padding: 2rem;
+        padding: 2rem 1.5rem 4rem;
       }
 
       .hero-stats {
@@ -1342,6 +1343,10 @@
       }
 
       .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .testimonials-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1370,6 +1375,12 @@
 
       .machine-display {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .testimonials-grid {
+        grid-template-columns: 1fr 1fr;
       }
     }
 
@@ -1503,12 +1514,13 @@
           <div class="about-pillars">
             <div class="pillar">
               <div class="pillar-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="12"></line>
-                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-              </svg>
-            </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
               <div class="pillar-name" data-fr="Vision" data-en="Vision">Vision</div>
               <p class="pillar-text"
                 data-fr="Leader reconnu de la transformation métallique en Algérie et dans la région MENA."
@@ -1517,12 +1529,15 @@
             </div>
             <div class="pillar">
               <div class="pillar-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.29 7 12 12 20.71 7"></polyline>
-                <line x1="12" y1="22" x2="12" y2="12"></line>
-              </svg>
-            </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                  </path>
+                  <polyline points="3.29 7 12 12 20.71 7"></polyline>
+                  <line x1="12" y1="22" x2="12" y2="12"></line>
+                </svg>
+              </div>
               <div class="pillar-name" data-fr="Mission" data-en="Mission">Mission</div>
               <p class="pillar-text"
                 data-fr="Fournir des solutions de haute précision qui optimisent la productivité de nos partenaires."
@@ -1531,10 +1546,13 @@
             </div>
             <div class="pillar">
               <div class="pillar-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-              </svg>
-            </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                  </polygon>
+                </svg>
+              </div>
               <div class="pillar-name" data-fr="Valeurs" data-en="Values">Valeurs</div>
               <p class="pillar-text" data-fr="Précision · Intégrité · Innovation · Engagement client · Durabilité"
                 data-en="Precision · Integrity · Innovation · Customer commitment · Sustainability">Précision ·
@@ -1552,14 +1570,12 @@
       <div class="section-eyebrow" data-fr="Parc Machine" data-en="Machine Fleet">Parc Machine</div>
       <h2 class="section-title" data-fr="Technologies de <em>Pointe</em>" data-en="Cutting-Edge <em>Technologies</em>">
         Technologies de <em>Pointe</em></h2>
-
       <div class="machines-tabs" id="machinesTabs" style="margin-top:2.5rem">
         <button class="tab-btn active" onclick="showMachine(0, this)">01 — Découpe Laser</button>
         <button class="tab-btn" onclick="showMachine(1, this)">02 — Soudure 4-en-1</button>
         <button class="tab-btn" onclick="showMachine(2, this)">03 — Découpe Tube</button>
         <button class="tab-btn" onclick="showMachine(3, this)">04 — Presse Plieuse</button>
       </div>
-
       <div class="machine-display fade-up" id="machineDisplay">
         <div class="machine-img-panel">
           <div class="machine-num" id="machineNum">01</div>
@@ -1591,11 +1607,10 @@
         Nos <em>Services</em> Industriels</h2>
       <div class="services-grid" id="servicesGrid">
         <div class="service-card fade-up">
-          <span class="service-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <span class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
-            </svg>
-          </span>
+            </svg></span>
           <div class="service-name" data-fr="Découpe Laser" data-en="Laser Cutting">Découpe Laser</div>
           <p class="service-desc"
             data-fr="Découpe de précision sur tôles d'acier, inox et aluminium avec finition parfaite."
@@ -1608,11 +1623,12 @@
           </ul>
         </div>
         <div class="service-card fade-up">
-          <span class="service-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
-            </svg>
-          </span>
+          <span class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z">
+              </path>
+            </svg></span>
           <div class="service-name" data-fr="Soudure Laser" data-en="Laser Welding">Soudure Laser</div>
           <p class="service-desc" data-fr="Soudure laser haute précision sans déformation ni oxydation."
             data-en="High-precision laser welding without deformation or oxidation.">Soudure laser haute précision sans
@@ -1624,12 +1640,13 @@
           </ul>
         </div>
         <div class="service-card fade-up">
-          <span class="service-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 9l-7-7L3 5c-1.105 0-2 .895-2 2v10c0 1.105.895 2 2 2h10c1.105 0 2-.895 2-2V7l-7-7zM9 3L4 8h3v9h9V8h3l-5-5z"></path>
+          <span class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M14 9l-7-7L3 5c-1.105 0-2 .895-2 2v10c0 1.105.895 2 2 2h10c1.105 0 2-.895 2-2V7l-7-7zM9 3L4 8h3v9h9V8h3l-5-5z">
+              </path>
               <path d="M9 9h6v6H9z"></path>
-            </svg>
-          </span>
+            </svg></span>
           <div class="service-name" data-fr="Découpe Tube" data-en="Tube Cutting">Découpe Tube Laser</div>
           <p class="service-desc" data-fr="Découpe laser de tubes et profilés métalliques de toutes sections."
             data-en="Laser cutting of tubes and metal profiles of all sections.">Découpe laser de tubes et profilés
@@ -1641,13 +1658,12 @@
           </ul>
         </div>
         <div class="service-card fade-up">
-          <span class="service-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <span class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="20" x2="12" y2="10"></line>
               <line x1="18" y1="20" x2="18" y2="4"></line>
               <line x1="6" y1="20" x2="6" y2="16"></line>
-            </svg>
-          </span>
+            </svg></span>
           <div class="service-name" data-fr="Pliage de Précision" data-en="Precision Bending">Pliage de Précision</div>
           <p class="service-desc"
             data-fr="Pliage CNC pour la fabrication de pièces complexes avec répétabilité absolue."
@@ -1660,12 +1676,11 @@
           </ul>
         </div>
         <div class="service-card fade-up">
-          <span class="service-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <span class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
               <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-            </svg>
-          </span>
+            </svg></span>
           <div class="service-name" data-fr="Fabrication Sur Mesure" data-en="Custom Manufacturing">Fabrication Sur
             Mesure</div>
           <p class="service-desc"
@@ -1679,14 +1694,13 @@
           </ul>
         </div>
         <div class="service-card fade-up">
-          <span class="service-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <span class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
               <circle cx="9" cy="7" r="4"></circle>
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
               <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-          </span>
+            </svg></span>
           <div class="service-name" data-fr="Solutions Complètes" data-en="Complete Solutions">Solutions Complètes</div>
           <p class="service-desc"
             data-fr="Partenariat industriel global incluant l'analyse de vos besoins et l'optimisation de vos coûts."
@@ -1709,8 +1723,7 @@
         <div>
           <div class="section-eyebrow" data-fr="Nos Réalisations" data-en="Our Projects">Nos Réalisations</div>
           <h2 class="section-title" data-fr="Projets <em>Accomplis</em>" data-en="Completed <em>Projects</em>">Projets
-            <em>Accomplis</em>
-          </h2>
+            <em>Accomplis</em></h2>
         </div>
         <div class="filter-bar">
           <button class="filter-btn active" onclick="filterPortfolio('all', this)" data-fr="Tous"
@@ -1777,16 +1790,13 @@
     </div>
   </section>
 
-
   <!-- ── TESTIMONIALS ──────────────────────────────────── -->
   <section id="testimonials">
     <div class="container">
       <div class="section-eyebrow" data-fr="Avis Clients" data-en="Client Reviews">Avis Clients</div>
       <h2 class="section-title" data-fr="Ce Qu'Ils <em>Pensent</em> De Nous"
         data-en="What They <em>Think</em> About Us">Ce Qu'Ils <em>Pensent</em> De Nous</h2>
-      <div class="testimonials-grid fade-up" id="testimonialsGrid">
-        <!-- Rendered via JS -->
-      </div>
+      <div class="testimonials-grid fade-up" id="testimonialsGrid"></div>
     </div>
   </section>
 
@@ -1799,48 +1809,44 @@
       <div class="quote-grid">
         <div class="quote-perks fade-up">
           <div class="perk">
-            <div class="perk-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="perk-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
-              </svg>
-            </div>
+              </svg></div>
             <div>
               <div class="perk-name">Réponse sous 24h</div>
               <p class="perk-desc">Notre équipe technique vous recontacte rapidement.</p>
             </div>
           </div>
           <div class="perk">
-            <div class="perk-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="perk-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 2v20M2 12h20"></path>
                 <circle cx="12" cy="12" r="10"></circle>
-              </svg>
-            </div>
+              </svg></div>
             <div>
               <div class="perk-name">Devis Gratuit</div>
               <p class="perk-desc">Sans engagement, analyse complète incluse.</p>
             </div>
           </div>
           <div class="perk">
-            <div class="perk-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="perk-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="20" x2="12" y2="10"></line>
                 <line x1="18" y1="20" x2="18" y2="4"></line>
                 <line x1="6" y1="20" x2="6" y2="16"></line>
-              </svg>
-            </div>
+              </svg></div>
             <div>
               <div class="perk-name">Fichiers DXF/DWG</div>
               <p class="perk-desc">Envoyez vos plans techniques directement.</p>
             </div>
           </div>
           <div class="perk">
-            <div class="perk-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="perk-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-              </svg>
-            </div>
+              </svg></div>
             <div>
               <div class="perk-name">Prototypage Rapide</div>
               <p class="perk-desc">Validation avant production série disponible.</p>
@@ -1903,23 +1909,23 @@
       <div class="contact-grid">
         <div class="contact-block fade-up" id="contactBlock">
           <div class="contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-            </div>
+              </svg></div>
             <div>
               <div class="contact-info-label">Adresse</div>
               <div class="contact-info-value">Zone Industrielle, Sétif<br>Algérie — 19000</div>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-            </div>
+            <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                </path>
+              </svg></div>
             <div>
               <div class="contact-info-label">Téléphone</div>
               <div class="contact-info-value">
@@ -1929,26 +1935,22 @@
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                 <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-            </div>
+              </svg></div>
             <div>
               <div class="contact-info-label">Email</div>
-              <div class="contact-info-value">
-                <a href="mailto:info@kmc-metal.dz">info@kmc-metal.dz</a>
-              </div>
+              <div class="contact-info-value"><a href="mailto:info@kmc-metal.dz">info@kmc-metal.dz</a></div>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-            </div>
+              </svg></div>
             <div>
               <div class="contact-info-label">Horaires</div>
               <div class="contact-info-value">Dim–Jeu : 8h00 – 17h00</div>
@@ -1956,13 +1958,15 @@
           </div>
         </div>
         <div class="fade-up">
-              <div class="map-placeholder">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:8px">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                  <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                Zone Industrielle, Sétif — Algérie
-              </div>
+          <div class="map-placeholder">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"
+              style="display:inline;vertical-align:middle;margin-right:8px">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            Zone Industrielle, Sétif — Algérie
+          </div>
         </div>
       </div>
     </div>
@@ -1983,8 +1987,7 @@
   </footer>
 
   <!-- ── SCRIPTS ────────────────────────────────────────── -->
-    <script>
-    /* --- Icon rendering --- */
+  <script>
     function getIcon(name) {
       const icons = {
         bolt: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>',
@@ -2000,13 +2003,11 @@
       };
       return icons[name] || name;
     }
-    
-    /* --- Scroll navbar --- */
+
     window.addEventListener('scroll', () => {
       document.getElementById('navbarWrap').classList.toggle('scrolled', window.scrollY > 60);
     });
 
-    /* --- Mobile menu --- */
     function toggleMenu() {
       document.getElementById('mobileMenu').classList.toggle('open');
     }
@@ -2014,12 +2015,10 @@
       document.getElementById('mobileMenu').classList.remove('open');
     }
 
-    /* --- Global Data --- */
     let currentLang = 'fr';
     let cmsData = null;
     let machinesData = [];
 
-    /* --- Language switcher --- */
     function setLang(lang) {
       currentLang = lang;
       document.querySelectorAll('[data-fr]').forEach(el => {
@@ -2031,22 +2030,16 @@
       });
       document.getElementById('langFR').classList.toggle('active', lang === 'fr');
       document.getElementById('langEN').classList.toggle('active', lang === 'en');
-
-      // Re-render components that depend on JS translation
-      if (cmsData) {
-        if (cmsData.machines && cmsData.machines.length > 0) {
-          renderMachines(cmsData.machines);
-          // Restore selected machine tab
-          const activeTab = document.querySelector('.tab-btn.active');
-          if (activeTab) {
-            const idx = parseInt(activeTab.getAttribute('data-idx'));
-            if (!isNaN(idx)) showMachine(idx, activeTab);
-          }
+      if (cmsData && cmsData.machines && cmsData.machines.length > 0) {
+        renderMachines(cmsData.machines);
+        const activeTab = document.querySelector('.tab-btn.active');
+        if (activeTab) {
+          const idx = parseInt(activeTab.getAttribute('data-idx'));
+          if (!isNaN(idx)) showMachine(idx, activeTab);
         }
       }
     }
 
-    /* --- Fetch CMS Data --- */
     async function initCMS() {
       try {
         const [general, contact, hero, about, machines, services, portfolio, testimonials] = await Promise.all([
@@ -2059,7 +2052,6 @@
           fetch('data/portfolio.json').then(r => r.json()).catch(() => null),
           fetch('data/testimonials.json').then(r => r.json()).catch(() => null)
         ]);
-
         cmsData = {
           general: general || {},
           contact: contact || {},
@@ -2070,7 +2062,6 @@
           portfolio: (portfolio && portfolio.items) ? portfolio.items : [],
           testimonials: (testimonials && testimonials.items) ? testimonials.items : []
         };
-
         machinesData = cmsData.machines;
         renderData();
         setLang(currentLang);
@@ -2081,215 +2072,118 @@
 
     function renderData() {
       const d = cmsData;
-
-      // General
       if (d.general && d.general.company_name) {
         const sub = document.getElementById('logoSub');
-        if (sub) {
-          sub.setAttribute('data-fr', d.general.company_name);
-          sub.setAttribute('data-en', d.general.company_name);
-          sub.textContent = d.general.company_name;
-        }
+        if (sub) {sub.setAttribute('data-fr', d.general.company_name); sub.setAttribute('data-en', d.general.company_name); sub.textContent = d.general.company_name;}
       }
-
-      // Hero
       if (d.hero && d.hero.line1_fr) {
         document.getElementById('heroTitle').innerHTML = `
-            <span data-fr="${d.hero.line1_fr}" data-en="${d.hero.line1_en || d.hero.line1_fr}">${d.hero.line1_fr}</span><br>
-            <em><span data-fr="${d.hero.line2_fr}" data-en="${d.hero.line2_en || d.hero.line2_fr}">${d.hero.line2_fr}</span></em><br>
-            <span data-fr="${d.hero.line3_fr}" data-en="${d.hero.line3_en || d.hero.line3_fr}">${d.hero.line3_fr}</span>
-          `;
+          <span data-fr="${d.hero.line1_fr}" data-en="${d.hero.line1_en || d.hero.line1_fr}">${d.hero.line1_fr}</span><br>
+          <em><span data-fr="${d.hero.line2_fr}" data-en="${d.hero.line2_en || d.hero.line2_fr}">${d.hero.line2_fr}</span></em><br>
+          <span data-fr="${d.hero.line3_fr}" data-en="${d.hero.line3_en || d.hero.line3_fr}">${d.hero.line3_fr}</span>`;
         document.getElementById('heroSub').setAttribute('data-fr', d.hero.subtitle_fr);
         document.getElementById('heroSub').setAttribute('data-en', d.hero.subtitle_en || d.hero.subtitle_fr);
         document.getElementById('heroSub').textContent = d.hero.subtitle_fr;
         if (d.hero.image) document.getElementById('heroImg').src = d.hero.image;
       }
-
-      // Hero Stats
       if (d.general && d.general.stat_projects) {
         document.getElementById('heroStats').innerHTML = `
-            <div>
-              <div class="stat-num">${d.general.stat_projects}<span>+</span></div>
-              <div class="stat-label" data-fr="Projets Réalisés" data-en="Projects Done">Projets Réalisés</div>
-            </div>
-            <div>
-              <div class="stat-num">${d.general.stat_years}<span>+</span></div>
-              <div class="stat-label" data-fr="Ans d'Expérience" data-en="Years Experience">Ans d'Expérience</div>
-            </div>
-            <div>
-              <div class="stat-num">${d.general.stat_machines}</div>
-              <div class="stat-label" data-fr="Machines CNC" data-en="CNC Machines">Machines CNC</div>
-            </div>
-          `;
+          <div><div class="stat-num">${d.general.stat_projects}<span>+</span></div><div class="stat-label" data-fr="Projets Réalisés" data-en="Projects Done">Projets Réalisés</div></div>
+          <div><div class="stat-num">${d.general.stat_years}<span>+</span></div><div class="stat-label" data-fr="Ans d'Expérience" data-en="Years Experience">Ans d'Expérience</div></div>
+          <div><div class="stat-num">${d.general.stat_machines}</div><div class="stat-label" data-fr="Machines CNC" data-en="CNC Machines">Machines CNC</div></div>`;
       }
-
-      // About
       if (d.about && d.about.text_fr) {
-           let pillarsHTML = '';
-          if (d.about && d.about.pillars) {
-            pillarsHTML = '<div class="about-pillars">' + d.about.pillars.map(p => `
-                  <div class="pillar">
-                    <div class="pillar-icon">${
-                      p.icon ? getIcon(p.icon) : ''
-                    }</div>
-                    <div class="pillar-name" data-fr="${p.name_fr}" data-en="${p.name_en || p.name_fr}">${p.name_fr}</div>
-                    <p class="pillar-text" data-fr="${p.text_fr}" data-en="${p.text_en || p.text_fr}">${p.text_fr}</p>
-                  </div>
-                `).join('') + '</div>';
-          }
-
+        let pillarsHTML = '';
+        if (d.about.pillars) {
+          pillarsHTML = '<div class="about-pillars">' + d.about.pillars.map(p => `
+            <div class="pillar">
+              <div class="pillar-icon">${p.icon ? getIcon(p.icon) : ''}</div>
+              <div class="pillar-name" data-fr="${p.name_fr}" data-en="${p.name_en || p.name_fr}">${p.name_fr}</div>
+              <p class="pillar-text" data-fr="${p.text_fr}" data-en="${p.text_en || p.text_fr}">${p.text_fr}</p>
+            </div>`).join('') + '</div>';
+        }
         document.getElementById('aboutGrid').innerHTML = `
-            <div class="about-img-wrap fade-up">
-              <img class="about-img" src="${d.about.image || ''}" alt="KMC Workshop" />
-              <div class="about-img-accent"></div>
-              <div class="about-tag">Est. ${d.general ? d.general.founded || 2012 : 2012}</div>
-            </div>
-            <div class="about-content fade-up">
-              <p class="section-desc" data-fr="${d.about.text_fr}" data-en="${d.about.text_en || d.about.text_fr}">${d.about.text_fr}</p>
-              ${pillarsHTML}
-            </div>
-          `;
+          <div class="about-img-wrap fade-up">
+            <img class="about-img" src="${d.about.image || ''}" alt="KMC Workshop" />
+            <div class="about-img-accent"></div>
+            <div class="about-tag">Est. ${d.general ? d.general.founded || 2012 : 2012}</div>
+          </div>
+          <div class="about-content fade-up">
+            <p class="section-desc" data-fr="${d.about.text_fr}" data-en="${d.about.text_en || d.about.text_fr}">${d.about.text_fr}</p>
+            ${pillarsHTML}
+          </div>`;
       }
-
-      // Machines
-      if (d.machines && d.machines.length > 0) {
-        renderMachines(d.machines);
-      }
-
-      // Services
+      if (d.machines && d.machines.length > 0) renderMachines(d.machines);
       if (d.services && d.services.length > 0) {
         document.getElementById('servicesGrid').innerHTML = d.services.map(s => `
-            <div class="service-card fade-up">
-              <span class="service-icon">${
-                s.icon ? getIcon(s.icon) : ''
-              }</span>
-              <div class="service-name" data-fr="${s.name_fr}" data-en="${s.name_en || s.name_fr}">${s.name_fr}</div>
-              <p class="service-desc" data-fr="${s.desc_fr}" data-en="${s.desc_en || s.desc_fr}">${s.desc_fr}</p>
-              <ul class="service-specs">
-                ${s.specs ? s.specs.map(spec => `<li>${spec.item}</li>`).join('') : ''}
-              </ul>
-            </div>
-          `).join('');
+          <div class="service-card fade-up">
+            <span class="service-icon">${s.icon ? getIcon(s.icon) : ''}</span>
+            <div class="service-name" data-fr="${s.name_fr}" data-en="${s.name_en || s.name_fr}">${s.name_fr}</div>
+            <p class="service-desc" data-fr="${s.desc_fr}" data-en="${s.desc_en || s.desc_fr}">${s.desc_fr}</p>
+            <ul class="service-specs">${s.specs ? s.specs.map(spec => `<li>${spec.item}</li>`).join('') : ''}</ul>
+          </div>`).join('');
       }
-
-      // Portfolio
       if (d.portfolio && d.portfolio.length > 0) {
         document.getElementById('portfolioGrid').innerHTML = d.portfolio.map(p => `
-            <div class="portfolio-item" data-cat="${p.category}">
-              <img class="portfolio-img" src="${p.image}" alt="Project">
-              <div class="portfolio-info">
-                <div class="portfolio-cat">${(p.category || '').toUpperCase()}</div>
-                <div class="portfolio-name" data-fr="${p.title_fr}" data-en="${p.title_en || p.title_fr}">${p.title_fr}</div>
-              </div>
+          <div class="portfolio-item" data-cat="${p.category}">
+            <img class="portfolio-img" src="${p.image}" alt="Project">
+            <div class="portfolio-info">
+              <div class="portfolio-cat">${(p.category || '').toUpperCase()}</div>
+              <div class="portfolio-name" data-fr="${p.title_fr}" data-en="${p.title_en || p.title_fr}">${p.title_fr}</div>
             </div>
-          `).join('');
+          </div>`).join('');
       }
-
-
-      // Testimonials
       if (d.testimonials && d.testimonials.length > 0) {
         document.getElementById('testimonialsGrid').innerHTML = d.testimonials.map(t => {
           const quote = currentLang === 'en' && t.quote_en ? t.quote_en : t.quote_fr;
-           const avatarSrc = t.avatar ? `<img src="${t.avatar}" class="testimonial-avatar" alt="${t.name}">` : `<div class="testimonial-avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>`;
-          const sectorHTML = t.sector ? `<div class="testimonial-sector">${t.sector}</div>` : '';
-
+          const avatarSrc = t.avatar
+            ? `<img src="${t.avatar}" class="testimonial-avatar" alt="${t.name}">`
+            : `<div class="testimonial-avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>`;
           return `
-                <div class="testimonial-card">
-                  ${sectorHTML}
-                  <div class="testimonial-quote" data-fr="${t.quote_fr}" data-en="${t.quote_en || t.quote_fr}">${quote}</div>
-                  <div class="testimonial-author">
-                    ${avatarSrc}
-                    <div class="testimonial-info">
-                      <div class="testimonial-name">${t.name}</div>
-                      <div class="testimonial-role">${t.role} - ${t.company}</div>
-                    </div>
-                  </div>
+            <div class="testimonial-card">
+              ${t.sector ? `<div class="testimonial-sector">${t.sector}</div>` : ''}
+              <div class="testimonial-quote" data-fr="${t.quote_fr}" data-en="${t.quote_en || t.quote_fr}">${quote}</div>
+              <div class="testimonial-author">
+                ${avatarSrc}
+                <div class="testimonial-info">
+                  <div class="testimonial-name">${t.name}</div>
+                  <div class="testimonial-role">${t.role} - ${t.company}</div>
                 </div>
-              `;
+              </div>
+            </div>`;
         }).join('');
       }
-
-      // Contact
       if (d.contact && d.contact.phone1) {
         const c = d.contact;
-        const phoneLinks = `
-            <a href="tel:${c.phone1.replace(/\s+/g, '')}">${c.phone1}</a><br>
-            ${c.phone2 ? `<a href="tel:${c.phone2.replace(/\s+/g, '')}">${c.phone2}</a>` : ''}
-          `;
-
         let hoursHTML = 'Dim–Jeu : 8h00 – 17h00';
-        if (c.hours && c.hours.length > 0) {
-          hoursHTML = c.hours.map(h => `${h.days} : ${h.hours}`).join('<br>');
-        }
-
+        if (c.hours && c.hours.length > 0) hoursHTML = c.hours.map(h => `${h.days} : ${h.hours}`).join('<br>');
         document.getElementById('contactBlock').innerHTML = `
-            <div class="contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-            </div>
-              <div>
-                <div class="contact-info-label" data-fr="Adresse" data-en="Address">Adresse</div>
-                <div class="contact-info-value">${(c.address || '').replace(/\n/g, '<br>')}</div>
-              </div>
-            </div>
-            <div class="contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-            </div>
-              <div>
-                <div class="contact-info-label" data-fr="Téléphone" data-en="Phone">Téléphone</div>
-                <div class="contact-info-value">${phoneLinks}</div>
-              </div>
-            </div>
-            <div class="contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-            </div>
-              <div>
-                <div class="contact-info-label" data-fr="Email" data-en="Email">Email</div>
-                <div class="contact-info-value"><a href="mailto:${c.email1}">${c.email1}</a></div>
-              </div>
-            </div>
-            <div class="contact-item">
-            <div class="contact-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-            </div>
-              <div>
-                <div class="contact-info-label" data-fr="Horaires" data-en="Hours">Horaires</div>
-                <div class="contact-info-value">${hoursHTML}</div>
-              </div>
-            </div>
-          `;
+          <div class="contact-item">
+            <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+            <div><div class="contact-info-label" data-fr="Adresse" data-en="Address">Adresse</div><div class="contact-info-value">${(c.address || '').replace(/\n/g, '<br>')}</div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+            <div><div class="contact-info-label" data-fr="Téléphone" data-en="Phone">Téléphone</div><div class="contact-info-value"><a href="tel:${c.phone1.replace(/\s+/g, '')}">${c.phone1}</a><br>${c.phone2 ? `<a href="tel:${c.phone2.replace(/\s+/g, '')}">${c.phone2}</a>` : ''}</div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+            <div><div class="contact-info-label" data-fr="Email" data-en="Email">Email</div><div class="contact-info-value"><a href="mailto:${c.email1}">${c.email1}</a></div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+            <div><div class="contact-info-label" data-fr="Horaires" data-en="Hours">Horaires</div><div class="contact-info-value">${hoursHTML}</div></div>
+          </div>`;
       }
-
-      // Re-trigger observer for new fade-up elements
       document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
     }
 
     function renderMachines(machines) {
-      // Render Tabs
-      const tabsHTML = machines.map((m, i) => `
-          <button class="tab-btn ${i === 0 ? 'active' : ''}" data-idx="${i}" onclick="showMachine(${i}, this)">
-            ${String(i + 1).padStart(2, '0')} — <span data-fr="${m.name_fr}" data-en="${m.name_en || m.name_fr}">${m.name_fr}</span>
-          </button>
-        `).join('');
-      document.getElementById('machinesTabs').innerHTML = tabsHTML;
-
-      // Render first machine
-      if (machines.length > 0) {
-        showMachine(0, document.querySelector('.tab-btn'));
-      }
+      document.getElementById('machinesTabs').innerHTML = machines.map((m, i) => `
+        <button class="tab-btn ${i === 0 ? 'active' : ''}" data-idx="${i}" onclick="showMachine(${i}, this)">
+          ${String(i + 1).padStart(2, '0')} — <span data-fr="${m.name_fr}" data-en="${m.name_en || m.name_fr}">${m.name_fr}</span>
+        </button>`).join('');
+      if (machines.length > 0) showMachine(0, document.querySelector('.tab-btn'));
     }
 
     function showMachine(i, btn) {
@@ -2297,7 +2191,6 @@
       const m = machinesData[i];
       const name = currentLang === 'en' && m.name_en ? m.name_en : m.name_fr;
       const desc = currentLang === 'en' && m.desc_en ? m.desc_en : m.desc_fr;
-
       let specsHTML = '';
       if (m.specs) {
         specsHTML = m.specs.map(s => {
@@ -2305,19 +2198,16 @@
           return `<div class="spec-row"><span class="spec-key">${key}</span><span class="spec-val">${s.value}</span></div>`;
         }).join('');
       }
-
       document.getElementById('machineNum').textContent = String(i + 1).padStart(2, '0');
       document.getElementById('machineBadge').textContent = m.badge || '';
       document.getElementById('machineName').textContent = name;
       document.getElementById('machineDesc').textContent = desc;
       if (m.image) document.getElementById('machineImg').src = m.image;
       document.getElementById('machineSpecs').innerHTML = specsHTML;
-
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
     }
 
-    /* --- Portfolio filter --- */
     function filterPortfolio(cat, btn) {
       document.querySelectorAll('.portfolio-item').forEach(item => {
         item.style.display = (cat === 'all' || item.dataset.cat === cat) ? 'block' : 'none';
@@ -2326,20 +2216,17 @@
       btn.classList.add('active');
     }
 
-    /* --- Quote form --- */
     function submitQuote(e) {
       e.preventDefault();
       alert(currentLang === 'en' ? 'Request sent! Our team will contact you within 24 hours.' : 'Demande envoyée ! Notre équipe vous recontactera sous 24h.');
       e.target.reset();
     }
 
-    /* --- Scroll fade-in --- */
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => {if (e.isIntersecting) {e.target.classList.add('visible');} });
+      entries.forEach(e => {if (e.isIntersecting) e.target.classList.add('visible');});
     }, {threshold: 0.1});
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    // Initialize CMS Data
     initCMS();
   </script>
 
