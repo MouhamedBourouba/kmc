@@ -1,0 +1,13 @@
+{
+  "phone1": "+213 666 79 35534",
+  "phone2": "+213 774 85 3904",
+  "email1": "info@test.dz",
+  "address": "Zone Industrielle, Sétif\nAlgérie — 19000",
+  "hours": [
+    {
+      "days": "Dim–Jeu",
+      "hours": "8h00 – 17h00"
+    }
+  ],
+  "email2": "test@gmail.com"
+}

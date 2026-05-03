@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "name": "Karim Benali",
+      "role": "Directeur Technique",
+      "company": "AutoParts DZ",
+      "quote_fr": "La précision des pièces découpées au laser est exceptionnelle. Un partenaire industriel de confiance.",
+      "quote_en": "The precision of the laser cut parts is exceptional. A trusted industrial partner.",
+      "sector": "Automobile"
+    },
+    {
+      "name": "Sarah Haddad",
+      "role": "Chef de Projet",
+      "company": "BatiMetal",
+      "quote_fr": "Délais respectés et qualité de soudure irréprochable. KMC nous accompagne sur tous nos grands chantiers.",
+      "quote_en": "Deadlines met and flawless welding quality. KMC supports us on all our major projects.",
+      "sector": "BTP"
+    },
+    {
+      "name": "Chihab",
+      "role": "Responsable Achat",
+      "company": "AgriTech",
+      "quote_fr": "Un service sur mesure très réactif. Leur parc de machines CNC est vraiment impressionnant.\n\ntest",
+      "quote_en": "A very responsive custom service. Their CNC machine fleet is truly impressive.",
+      "sector": "Agriculture"
+    }
+  ]
+}

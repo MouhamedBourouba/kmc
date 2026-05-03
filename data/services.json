@@ -1,0 +1,126 @@
+{
+  "items": [
+    {
+      "order": 1,
+      "icon": "bolt",
+      "name_fr": "Découpe Laser",
+      "name_en": "Laser Cutting",
+      "desc_fr": "Découpe de précision sur tôles d'acier, inox et aluminium avec finition parfaite.",
+      "desc_en": "Precision cutting on steel, stainless and aluminum sheets with perfect finish.",
+      "specs": [
+        {
+          "item": "Tolérance ±0.05mm"
+        },
+        {
+          "item": "Épaisseur 0.5–25mm"
+        },
+        {
+          "item": "Production série & unitaire"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "icon": "fire",
+      "name_fr": "Soudure Laser",
+      "name_en": "Laser Welding",
+      "desc_fr": "Soudure laser haute précision sans déformation ni oxydation.",
+      "desc_en": "High-precision laser welding without deformation or oxidation.",
+      "specs": [
+        {
+          "item": "Sans soudure visible"
+        },
+        {
+          "item": "Nettoyage inclus"
+        },
+        {
+          "item": "Tous types de métaux"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "icon": "tool",
+      "name_fr": "Découpe Tube Laser",
+      "name_en": "Tube Cutting",
+      "desc_fr": "Découpe laser de tubes et profilés métalliques de toutes sections.",
+      "desc_en": "Laser cutting of tubes and metal profiles of all sections.",
+      "specs": [
+        {
+          "item": "Ø 20–220mm"
+        },
+        {
+          "item": "Coupes biseautées"
+        },
+        {
+          "item": "Perçages & encoches"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "icon": "ruler",
+      "name_fr": "Pliage de Précision",
+      "name_en": "Precision Bending",
+      "desc_fr": "Pliage CNC pour la fabrication de pièces complexes avec répétabilité absolue.",
+      "desc_en": "CNC bending for the manufacture of complex parts with absolute repeatability.",
+      "specs": [
+        {
+          "item": "Pliage jusqu'à 160T"
+        },
+        {
+          "item": "Angles ±0.5°"
+        },
+        {
+          "item": "Grandes dimensions"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "icon": "factory",
+      "name_fr": "Fabrication Sur Mesure",
+      "name_en": "Custom Manufacturing",
+      "desc_fr": "De la conception à la livraison, nous prenons en charge vos projets les plus complexes.",
+      "desc_en": "From design to delivery, we take charge of your most complex projects.",
+      "specs": [
+        {
+          "item": "Bureau d'études dédié"
+        },
+        {
+          "item": "Prototypage rapide"
+        },
+        {
+          "item": "Suivi de production"
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "icon": "handshake",
+      "name_fr": "Solutions Complètes",
+      "name_en": "Complete Solutions",
+      "desc_fr": "Partenariat industriel global incluant l'analyse de vos besoins et l'optimisation de vos coûts.",
+      "desc_en": "Global industrial partnership including needs analysis and cost optimization.",
+      "specs": [
+        {
+          "item": "Gestion de projet dédiée"
+        },
+        {
+          "item": "Délais garantis"
+        },
+        {
+          "item": "SAV & maintenance"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "name_fr": "test",
+      "name_en": "test",
+      "desc_fr": "test",
+      "desc_en": "test",
+      "icon": "s"
+    }
+  ]
+}

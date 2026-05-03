@@ -1,0 +1,28 @@
+{
+  "text_fr": "KMC – Khelfa Metal Company est un acteur de référence dans l'industrie métallurgique algérienne, spécialisé dans la transformation et l'usinage de précision. Fondée sur des valeurs d'excellence et d'innovation, KMC s'impose comme le partenaire industriel de confiance.",
+  "text_en": "KMC – Khelfa Metal Company is a benchmark player in the Algerian metallurgical industry, specialized in precision transformation and machining. Founded on values of excellence and innovation, KMC stands as the trusted industrial partner.",
+  "image": "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80",
+  "pillars": [
+    {
+      "icon": "target",
+      "name_fr": "Vision",
+      "name_en": "Vision",
+      "text_fr": "Leader reconnu de la transformation métallique en Algérie et dans la région MENA.",
+      "text_en": "Recognized leader in metal transformation in Algeria and the MENA region. test"
+    },
+    {
+      "icon": "cog",
+      "name_fr": "Mission",
+      "name_en": "Mission",
+      "text_fr": "Fournir des solutions de haute précision qui optimisent la productivité de nos partenaires.",
+      "text_en": "Provide high-precision solutions that optimize the productivity of our partners."
+    },
+    {
+      "icon": "diamond",
+      "name_fr": "Valeurs",
+      "name_en": "Values",
+      "text_fr": "Précision · Intégrité · Innovation · Engagement client · Durabilité",
+      "text_en": "Precision · Integrity · Innovation · Customer commitment · Sustainability"
+    }
+  ]
+}

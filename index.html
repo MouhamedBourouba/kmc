@@ -1,0 +1,2320 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KMC – Khelfa Metal Company</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;1,300&family=Barlow+Condensed:wght@500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ── TOKENS ─────────────────────────────────────── */
+    :root {
+      --black: #0a0a0a;
+      --dark: #111214;
+      --panel: #16181b;
+      --border: #2a2d32;
+      --steel: #8a9099;
+      --silver: #c8cdd5;
+      --white: #f0f2f5;
+      --accent: #e8461a;
+      --accent2: #ff6b3d;
+      --gold: #c9a84c;
+
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-cond: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ───────────────────────────────────── */
+    ::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+    }
+
+    /* ── NAVBAR ──────────────────────────────────────── */
+    .navbar-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 0 2rem;
+      background: linear-gradient(180deg, rgba(10, 10, 10, .97) 0%, rgba(10, 10, 10, 0) 100%);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, .04);
+      transition: background .3s;
+    }
+
+    .navbar-wrap.scrolled {
+      background: rgba(10, 10, 10, .97);
+    }
+
+    .navbar {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      gap: 2rem;
+    }
+
+    /* Logo */
+    .nav-logo {
+      text-decoration: none;
+      display: flex;
+      align-items: baseline;
+      gap: .5rem;
+      flex-shrink: 0;
+    }
+
+    .logo-kmc {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: .1em;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .logo-kmc span {
+      color: var(--accent);
+    }
+
+    .logo-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .logo-sub {
+      font-family: var(--font-cond);
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .2em;
+      color: var(--steel);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* Nav links */
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2.2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: var(--font-cond);
+      font-size: .85rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--steel);
+      text-decoration: none;
+      position: relative;
+      transition: color .2s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width .25s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Actions */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-cond);
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--steel);
+      transition: color .2s;
+      padding: 0;
+    }
+
+    .lang-btn.active {
+      color: var(--accent);
+    }
+
+    .lang-sep {
+      color: var(--border);
+      font-size: .75rem;
+    }
+
+    .btn-cta-nav {
+      font-family: var(--font-cond);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--white);
+      background: var(--accent);
+      padding: .55rem 1.4rem;
+      border: 1px solid var(--accent);
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background .2s, color .2s;
+    }
+
+    .btn-cta-nav:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--white);
+      transition: all .3s;
+    }
+
+    /* Mobile nav */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 10, .98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem;
+      z-index: 999;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      font-family: var(--font-cond);
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--silver);
+      text-decoration: none;
+      padding: .5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+
+
+    /* ── HERO ─────────────────────────────────────────── */
+     #home {
+      min-height: 100vh;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: var(--font-cond);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+    }
+
+    .hero-badge::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 8vw, 8rem);
+      line-height: .9;
+      letter-spacing: .02em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--accent);
+      -webkit-text-stroke: 1px var(--accent);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--steel);
+      line-height: 1.7;
+      max-width: 420px;
+      margin-bottom: 3rem;
+      letter-spacing: .01em;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      font-family: var(--font-cond);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--white);
+      background: var(--accent);
+      padding: .9rem 2.2rem;
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      transition: all .25s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      display: inline-block;
+      font-family: var(--font-cond);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--silver);
+      padding: .9rem 2.2rem;
+      border: 1px solid var(--border);
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      transition: all .25s;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--silver);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .stat-num span {
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-family: var(--font-cond);
+      font-size: .72rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin-top: .25rem;
+    }
+
+    /* Hero right — image panel */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%) brightness(.8);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--black) 0%, transparent 40%);
+    }
+
+    .hero-label {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      font-family: var(--font-cond);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .4);
+      writing-mode: vertical-rl;
+    }
+
+    /* Diagonal cut */
+    #home::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: var(--dark);
+      clip-path: polygon(0 80px, 100% 0, 100% 80px);
+      z-index: 3;
+    }
+
+    /* ── SECTION BASE ────────────────────────────────── */
+    section {
+      padding: 7rem 2rem;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      font-family: var(--font-cond);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+
+    .section-eyebrow::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      letter-spacing: .03em;
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .section-title em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--steel);
+      line-height: 1.8;
+      max-width: 520px;
+    }
+
+    /* ── ABOUT ───────────────────────────────────────── */
+    #about {
+      background: var(--dark);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 4rem;
+    }
+
+    .about-img-wrap {
+      position: relative;
+    }
+
+    .about-img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      filter: grayscale(20%);
+      display: block;
+    }
+
+    .about-img-accent {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 60%;
+      height: 60%;
+      border: 2px solid var(--accent);
+      z-index: -1;
+    }
+
+    .about-tag {
+      position: absolute;
+      top: 2rem;
+      left: -1.5rem;
+      background: var(--accent);
+      padding: .6rem 1.2rem;
+      font-family: var(--font-cond);
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .about-pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    .pillar {
+      background: var(--panel);
+      padding: 1.5rem;
+    }
+
+    .pillar-icon {
+      font-size: 1.5rem;
+      margin-bottom: .75rem;
+    }
+
+    .pillar-name {
+      font-family: var(--font-cond);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .4rem;
+    }
+
+    .pillar-text {
+      font-size: .82rem;
+      color: var(--steel);
+      line-height: 1.6;
+    }
+
+    /* ── MACHINES ────────────────────────────────────── */
+    #machines {
+      background: var(--black);
+    }
+
+    .machines-tabs {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      width: fit-content;
+      margin-bottom: 3rem;
+      overflow: hidden;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      font-family: var(--font-cond);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--steel);
+      padding: .7rem 1.5rem;
+      cursor: pointer;
+      border-right: 1px solid var(--border);
+      transition: all .2s;
+    }
+
+    .tab-btn:last-child {
+      border-right: none;
+    }
+
+    .tab-btn.active,
+    .tab-btn:hover {
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    .machine-display {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .machine-img-panel {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+
+    .machine-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%) brightness(.8);
+      transition: transform .5s;
+    }
+
+    .machine-img-panel:hover .machine-img {
+      transform: scale(1.04);
+    }
+
+    .machine-num {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      font-family: var(--font-display);
+      font-size: 4rem;
+      color: rgba(255, 255, 255, .08);
+      line-height: 1;
+      user-select: none;
+    }
+
+    .machine-info {
+      background: var(--panel);
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .machine-badge {
+      display: inline-block;
+      font-family: var(--font-cond);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: .3rem .8rem;
+      width: fit-content;
+    }
+
+    .machine-name {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      letter-spacing: .05em;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    .machine-desc {
+      font-size: .92rem;
+      color: var(--steel);
+      line-height: 1.7;
+    }
+
+    .machine-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .spec-row {
+      display: flex;
+      flex-direction: column;
+      gap: .2rem;
+    }
+
+    .spec-key {
+      font-family: var(--font-cond);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--steel);
+    }
+
+    .spec-val {
+      font-family: var(--font-cond);
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    /* ── SERVICES ────────────────────────────────────── */
+    #services {
+      background: var(--dark);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 4rem;
+    }
+
+    .service-card {
+      background: var(--panel);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: background .3s;
+      cursor: default;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--accent);
+      transition: height .35s;
+    }
+
+    .service-card:hover {
+      background: #1a1d21;
+    }
+
+    .service-card:hover::before {
+      height: 100%;
+    }
+
+    .service-icon {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .service-name {
+      font-family: var(--font-cond);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: .75rem;
+    }
+
+    .service-desc {
+      font-size: .88rem;
+      color: var(--steel);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .service-specs {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+
+    .service-specs li {
+      font-family: var(--font-cond);
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      color: var(--steel);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .service-specs li::before {
+      content: '—';
+      color: var(--accent);
+    }
+
+    /* ── PORTFOLIO ───────────────────────────────────── */
+    #portfolio {
+      background: var(--black);
+    }
+
+    .portfolio-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: none;
+      border: 1px solid var(--border);
+      font-family: var(--font-cond);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--steel);
+      padding: .5rem 1.1rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+    }
+
+    .portfolio-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%);
+      transition: transform .5s, filter .3s;
+    }
+
+    .portfolio-item:hover .portfolio-img {
+      transform: scale(1.08);
+      filter: grayscale(0%);
+    }
+
+    .portfolio-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(0deg, rgba(0, 0, 0, .9) 0%, transparent 100%);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all .3s;
+    }
+
+    .portfolio-item:hover .portfolio-info {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .portfolio-cat {
+      font-family: var(--font-cond);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .3rem;
+    }
+
+    .portfolio-name {
+      font-family: var(--font-cond);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      color: var(--white);
+    }
+
+
+    /* ── TESTIMONIALS ────────────────────────────────── */
+    #testimonials {
+      background: var(--black);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .testimonial-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .testimonial-quote {
+      font-size: .95rem;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.7;
+      flex-grow: 1;
+    }
+
+    .testimonial-quote::before {
+      content: '"';
+      color: var(--accent);
+      font-size: 2rem;
+      font-family: var(--font-display);
+      line-height: 0;
+      vertical-align: -0.8rem;
+      margin-right: 0.4rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+
+    .testimonial-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--dark);
+      object-fit: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      border: 1px solid var(--border);
+    }
+
+    .testimonial-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .testimonial-name {
+      font-family: var(--font-cond);
+      font-size: .95rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .testimonial-role {
+      font-family: var(--font-cond);
+      font-size: .75rem;
+      color: var(--steel);
+      letter-spacing: .05em;
+    }
+
+    .testimonial-sector {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-family: var(--font-cond);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.2rem 0.6rem;
+    }
+
+    @media (max-width: 1024px) {
+      .testimonials-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── QUOTE FORM ──────────────────────────────────── */
+    #quote {
+      background: var(--dark);
+    }
+
+    .quote-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 5rem;
+      margin-top: 4rem;
+      align-items: start;
+    }
+
+    .quote-perks {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .perk {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.2rem;
+      border: 1px solid var(--border);
+      background: var(--panel);
+    }
+
+    .perk-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+
+    .perk-name {
+      font-family: var(--font-cond);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: .25rem;
+    }
+
+    .perk-desc {
+      font-size: .82rem;
+      color: var(--steel);
+    }
+
+    .quote-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+
+    .form-label {
+      font-family: var(--font-cond);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--steel);
+    }
+
+    .form-label span {
+      color: var(--accent);
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .9rem;
+      font-weight: 300;
+      padding: .8rem 1rem;
+      outline: none;
+      transition: border-color .2s;
+      -webkit-appearance: none;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-select option {
+      background: var(--panel);
+    }
+
+    /* ── CONTACT ─────────────────────────────────────── */
+    #contact {
+      background: var(--black);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      margin-top: 4rem;
+    }
+
+    .contact-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      background: var(--panel);
+    }
+
+    .contact-info-label {
+      font-family: var(--font-cond);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .3rem;
+    }
+
+    .contact-info-value {
+      font-size: .95rem;
+      color: var(--silver);
+    }
+
+    .contact-info-value a {
+      color: var(--silver);
+      text-decoration: none;
+    }
+
+    .contact-info-value a:hover {
+      color: var(--accent);
+    }
+
+    .map-placeholder {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-cond);
+      font-size: .8rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--steel);
+    }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copy {
+      font-family: var(--font-cond);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      color: var(--steel);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-family: var(--font-cond);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--steel);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+     @media (max-width: 1024px) {
+      #home {
+        grid-template-columns: 1fr;
+        min-height: 100vh;
+        height: 100vh;
+      }
+
+      .hero-right {
+        display: none;
+      }
+
+      .hero-left {
+        padding: 4rem 2rem;
+        justify-content: center;
+      }
+
+      .about-grid,
+      .machine-display,
+      .quote-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .machines-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .btn-cta-nav {
+        display: none;
+      }
+
+      .hero-stats {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .about-pillars {
+        grid-template-columns: 1fr;
+      }
+
+      .machine-specs {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── FADE-IN ANIMATION ───────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── NAVBAR ──────────────────────────────────────── -->
+  <div class="navbar-wrap" id="navbarWrap">
+    <nav class="navbar">
+      <a href="#home" class="nav-logo">
+        <span class="logo-kmc">K<span>M</span>C</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub" id="logoSub" data-fr="Khelfa Metal Company" data-en="Khelfa Metal Company">Khelfa Metal
+          Company</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" data-fr="Accueil" data-en="Home">Accueil</a></li>
+        <li><a href="#about" data-fr="À Propos" data-en="About">À Propos</a></li>
+        <li><a href="#machines" data-fr="Machines" data-en="Machines">Machines</a></li>
+        <li><a href="#services" data-fr="Services" data-en="Services">Services</a></li>
+        <li><a href="#portfolio" data-fr="Réalisations" data-en="Portfolio">Réalisations</a></li>
+        <li><a href="#testimonials" data-fr="Témoignages" data-en="Testimonials">Témoignages</a></li>
+        <li><a href="#quote" data-fr="Devis" data-en="Quote">Devis</a></li>
+        <li><a href="#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn active" id="langFR" onclick="setLang('fr')">FR</button>
+          <span class="lang-sep">|</span>
+          <button class="lang-btn" id="langEN" onclick="setLang('en')">EN</button>
+        </div>
+        <a href="#quote" class="btn-cta-nav" data-fr="Demander un devis" data-en="Request a Quote">Demander un devis</a>
+        <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" onclick="closeMenu()" data-fr="Accueil" data-en="Home">Accueil</a>
+    <a href="#about" onclick="closeMenu()" data-fr="À Propos" data-en="About">À Propos</a>
+    <a href="#machines" onclick="closeMenu()" data-fr="Machines" data-en="Machines">Machines</a>
+    <a href="#services" onclick="closeMenu()" data-fr="Services" data-en="Services">Services</a>
+    <a href="#portfolio" onclick="closeMenu()" data-fr="Réalisations" data-en="Portfolio">Réalisations</a>
+    <a href="#testimonials" onclick="closeMenu()" data-fr="Témoignages" data-en="Testimonials">Témoignages</a>
+    <a href="#quote" onclick="closeMenu()" data-fr="Devis" data-en="Quote">Devis</a>
+    <a href="#contact" onclick="closeMenu()" data-fr="Contact" data-en="Contact">Contact</a>
+  </div>
+
+  <!-- ── HERO ─────────────────────────────────────────── -->
+  <section id="home">
+    <div class="hero-left fade-up">
+      <div class="hero-badge" data-fr="Industrie Métallurgique" data-en="Metallurgical Industry">Industrie Métallurgique
+      </div>
+      <h1 class="hero-title" id="heroTitle">
+        FAÇONNER<br><em>L'ACIER</em><br>DE DEMAIN
+      </h1>
+      <p class="hero-sub" id="heroSub"
+        data-fr="Leader B2B en transformation et usinage du métal. Technologies avancées, précision micrométrique, performance industrielle d'exception."
+        data-en="B2B leader in metal transformation and machining. Advanced technologies, micrometric precision, exceptional industrial performance.">
+        Leader B2B en transformation et usinage du métal. Technologies avancées, précision micrométrique, performance
+        industrielle d'exception.
+      </p>
+      <div class="hero-ctas">
+        <a href="#quote" class="btn-primary" data-fr="Demander un devis" data-en="Request a Quote">Demander un devis</a>
+        <a href="#machines" class="btn-ghost" data-fr="Nos Machines" data-en="Our Machines">Nos Machines</a>
+      </div>
+      <div class="hero-stats" id="heroStats">
+        <div>
+          <div class="stat-num">500<span>+</span></div>
+          <div class="stat-label" data-fr="Projets Réalisés" data-en="Projects Done">Projets Réalisés</div>
+        </div>
+        <div>
+          <div class="stat-num">12<span>+</span></div>
+          <div class="stat-label" data-fr="Ans d'Expérience" data-en="Years Experience">Ans d'Expérience</div>
+        </div>
+        <div>
+          <div class="stat-num">4</div>
+          <div class="stat-label" data-fr="Machines CNC" data-en="CNC Machines">Machines CNC</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img class="hero-img" id="heroImg" src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=1200&q=80"
+        alt="Laser cutting machine" />
+      <div class="hero-overlay"></div>
+      <div class="hero-label" data-fr="Découpe Laser Industrielle" data-en="Industrial Laser Cutting">Découpe Laser
+        Industrielle</div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ──────────────────────────────────────────── -->
+  <section id="about">
+    <div class="container">
+      <div class="section-eyebrow" data-fr="Qui Sommes-Nous" data-en="About Us">Qui Sommes-Nous</div>
+      <h2 class="section-title" data-fr="L'Excellence Métallurgique<br>au Service de l'<em>Industrie</em>"
+        data-en="Metallurgical Excellence<br>at the <em>Service</em> of Industry">L'Excellence Métallurgique au Service
+        de l'<em>Industrie</em></h2>
+      <div class="about-grid" id="aboutGrid">
+        <div class="about-img-wrap fade-up">
+          <img class="about-img" src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80"
+            alt="KMC Workshop" />
+          <div class="about-img-accent"></div>
+          <div class="about-tag">Est. 2012</div>
+        </div>
+        <div class="about-content fade-up">
+          <p class="section-desc"
+            data-fr="KMC – Khelfa Metal Company est un acteur de référence dans l'industrie métallurgique algérienne, spécialisé dans la transformation et l'usinage de précision. Fondée sur des valeurs d'excellence et d'innovation, KMC s'impose comme le partenaire industriel de confiance."
+            data-en="KMC – Khelfa Metal Company is a benchmark player in the Algerian metallurgical industry, specialized in precision transformation and machining. Founded on values of excellence and innovation, KMC stands as the trusted industrial partner.">
+            KMC – Khelfa Metal Company est un acteur de référence dans l'industrie métallurgique algérienne, spécialisé
+            dans la transformation et l'usinage de précision. Fondée sur des valeurs d'excellence et d'innovation, KMC
+            s'impose comme le partenaire industriel de confiance.
+          </p>
+          <div class="about-pillars">
+            <div class="pillar">
+              <div class="pillar-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+              <div class="pillar-name" data-fr="Vision" data-en="Vision">Vision</div>
+              <p class="pillar-text"
+                data-fr="Leader reconnu de la transformation métallique en Algérie et dans la région MENA."
+                data-en="Recognized leader in metal transformation in Algeria and the MENA region.">Leader reconnu de la
+                transformation métallique en Algérie et dans la région MENA.</p>
+            </div>
+            <div class="pillar">
+              <div class="pillar-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.29 7 12 12 20.71 7"></polyline>
+                <line x1="12" y1="22" x2="12" y2="12"></line>
+              </svg>
+            </div>
+              <div class="pillar-name" data-fr="Mission" data-en="Mission">Mission</div>
+              <p class="pillar-text"
+                data-fr="Fournir des solutions de haute précision qui optimisent la productivité de nos partenaires."
+                data-en="Provide high-precision solutions that optimize the productivity of our partners.">Fournir des
+                solutions de haute précision qui optimisent la productivité de nos partenaires.</p>
+            </div>
+            <div class="pillar">
+              <div class="pillar-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+              <div class="pillar-name" data-fr="Valeurs" data-en="Values">Valeurs</div>
+              <p class="pillar-text" data-fr="Précision · Intégrité · Innovation · Engagement client · Durabilité"
+                data-en="Precision · Integrity · Innovation · Customer commitment · Sustainability">Précision ·
+                Intégrité · Innovation · Engagement</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MACHINES ───────────────────────────────────────── -->
+  <section id="machines">
+    <div class="container">
+      <div class="section-eyebrow" data-fr="Parc Machine" data-en="Machine Fleet">Parc Machine</div>
+      <h2 class="section-title" data-fr="Technologies de <em>Pointe</em>" data-en="Cutting-Edge <em>Technologies</em>">
+        Technologies de <em>Pointe</em></h2>
+
+      <div class="machines-tabs" id="machinesTabs" style="margin-top:2.5rem">
+        <button class="tab-btn active" onclick="showMachine(0, this)">01 — Découpe Laser</button>
+        <button class="tab-btn" onclick="showMachine(1, this)">02 — Soudure 4-en-1</button>
+        <button class="tab-btn" onclick="showMachine(2, this)">03 — Découpe Tube</button>
+        <button class="tab-btn" onclick="showMachine(3, this)">04 — Presse Plieuse</button>
+      </div>
+
+      <div class="machine-display fade-up" id="machineDisplay">
+        <div class="machine-img-panel">
+          <div class="machine-num" id="machineNum">01</div>
+          <img class="machine-img" id="machineImg"
+            src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=900&q=80" alt="Machine" />
+        </div>
+        <div class="machine-info">
+          <span class="machine-badge" id="machineBadge">Haute Précision</span>
+          <h3 class="machine-name" id="machineName">Machine de Découpe Laser</h3>
+          <p class="machine-desc" id="machineDesc">Notre machine de découpe laser fibre de dernière génération offre une
+            précision micrométrique sur tous types de métaux.</p>
+          <div class="machine-specs" id="machineSpecs">
+            <div class="spec-row"><span class="spec-key">Puissance</span><span class="spec-val">6000W</span></div>
+            <div class="spec-row"><span class="spec-key">Plateau</span><span class="spec-val">3000 × 1500mm</span></div>
+            <div class="spec-row"><span class="spec-key">Épaisseur max</span><span class="spec-val">25mm (acier)</span>
+            </div>
+            <div class="spec-row"><span class="spec-key">Précision</span><span class="spec-val">±0.05mm</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ───────────────────────────────────────── -->
+  <section id="services">
+    <div class="container">
+      <div class="section-eyebrow" data-fr="Ce Que Nous Faisons" data-en="What We Do">Ce Que Nous Faisons</div>
+      <h2 class="section-title" data-fr="Nos <em>Services</em> Industriels" data-en="Our Industrial <em>Services</em>">
+        Nos <em>Services</em> Industriels</h2>
+      <div class="services-grid" id="servicesGrid">
+        <div class="service-card fade-up">
+          <span class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+            </svg>
+          </span>
+          <div class="service-name" data-fr="Découpe Laser" data-en="Laser Cutting">Découpe Laser</div>
+          <p class="service-desc"
+            data-fr="Découpe de précision sur tôles d'acier, inox et aluminium avec finition parfaite."
+            data-en="Precision cutting on steel, stainless and aluminum sheets with perfect finish.">Découpe de
+            précision sur tôles d'acier, inox et aluminium avec finition parfaite.</p>
+          <ul class="service-specs">
+            <li>Tolérance ±0.05mm</li>
+            <li>Épaisseur 0.5–25mm</li>
+            <li>Production série & unitaire</li>
+          </ul>
+        </div>
+        <div class="service-card fade-up">
+          <span class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+            </svg>
+          </span>
+          <div class="service-name" data-fr="Soudure Laser" data-en="Laser Welding">Soudure Laser</div>
+          <p class="service-desc" data-fr="Soudure laser haute précision sans déformation ni oxydation."
+            data-en="High-precision laser welding without deformation or oxidation.">Soudure laser haute précision sans
+            déformation ni oxydation.</p>
+          <ul class="service-specs">
+            <li>Sans soudure visible</li>
+            <li>Nettoyage inclus</li>
+            <li>Tous types de métaux</li>
+          </ul>
+        </div>
+        <div class="service-card fade-up">
+          <span class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 9l-7-7L3 5c-1.105 0-2 .895-2 2v10c0 1.105.895 2 2 2h10c1.105 0 2-.895 2-2V7l-7-7zM9 3L4 8h3v9h9V8h3l-5-5z"></path>
+              <path d="M9 9h6v6H9z"></path>
+            </svg>
+          </span>
+          <div class="service-name" data-fr="Découpe Tube" data-en="Tube Cutting">Découpe Tube Laser</div>
+          <p class="service-desc" data-fr="Découpe laser de tubes et profilés métalliques de toutes sections."
+            data-en="Laser cutting of tubes and metal profiles of all sections.">Découpe laser de tubes et profilés
+            métalliques de toutes sections.</p>
+          <ul class="service-specs">
+            <li>Ø 20–220mm</li>
+            <li>Coupes biseautées</li>
+            <li>Perçages & encoches</li>
+          </ul>
+        </div>
+        <div class="service-card fade-up">
+          <span class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="20" x2="12" y2="10"></line>
+              <line x1="18" y1="20" x2="18" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="16"></line>
+            </svg>
+          </span>
+          <div class="service-name" data-fr="Pliage de Précision" data-en="Precision Bending">Pliage de Précision</div>
+          <p class="service-desc"
+            data-fr="Pliage CNC pour la fabrication de pièces complexes avec répétabilité absolue."
+            data-en="CNC bending for the manufacture of complex parts with absolute repeatability.">Pliage CNC pour la
+            fabrication de pièces complexes avec répétabilité absolue.</p>
+          <ul class="service-specs">
+            <li>Pliage jusqu'à 160T</li>
+            <li>Angles ±0.5°</li>
+            <li>Grandes dimensions</li>
+          </ul>
+        </div>
+        <div class="service-card fade-up">
+          <span class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+          </span>
+          <div class="service-name" data-fr="Fabrication Sur Mesure" data-en="Custom Manufacturing">Fabrication Sur
+            Mesure</div>
+          <p class="service-desc"
+            data-fr="De la conception à la livraison, nous prenons en charge vos projets les plus complexes."
+            data-en="From design to delivery, we take charge of your most complex projects.">De la conception à la
+            livraison, nous prenons en charge vos projets les plus complexes.</p>
+          <ul class="service-specs">
+            <li>Bureau d'études dédié</li>
+            <li>Prototypage rapide</li>
+            <li>Suivi de production</li>
+          </ul>
+        </div>
+        <div class="service-card fade-up">
+          <span class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </span>
+          <div class="service-name" data-fr="Solutions Complètes" data-en="Complete Solutions">Solutions Complètes</div>
+          <p class="service-desc"
+            data-fr="Partenariat industriel global incluant l'analyse de vos besoins et l'optimisation de vos coûts."
+            data-en="Global industrial partnership including needs analysis and cost optimization.">Partenariat
+            industriel global incluant l'analyse de vos besoins et l'optimisation de vos coûts.</p>
+          <ul class="service-specs">
+            <li>Gestion de projet dédiée</li>
+            <li>Délais garantis</li>
+            <li>SAV & maintenance</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PORTFOLIO ──────────────────────────────────────── -->
+  <section id="portfolio">
+    <div class="container">
+      <div class="portfolio-header">
+        <div>
+          <div class="section-eyebrow" data-fr="Nos Réalisations" data-en="Our Projects">Nos Réalisations</div>
+          <h2 class="section-title" data-fr="Projets <em>Accomplis</em>" data-en="Completed <em>Projects</em>">Projets
+            <em>Accomplis</em>
+          </h2>
+        </div>
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterPortfolio('all', this)" data-fr="Tous"
+            data-en="All">Tous</button>
+          <button class="filter-btn" onclick="filterPortfolio('laser', this)" data-fr="Laser"
+            data-en="Laser">Laser</button>
+          <button class="filter-btn" onclick="filterPortfolio('soudure', this)" data-fr="Soudure"
+            data-en="Welding">Soudure</button>
+          <button class="filter-btn" onclick="filterPortfolio('pliage', this)" data-fr="Pliage"
+            data-en="Bending">Pliage</button>
+          <button class="filter-btn" onclick="filterPortfolio('tube', this)" data-fr="Tube" data-en="Tube">Tube</button>
+        </div>
+      </div>
+      <div class="portfolio-grid" id="portfolioGrid">
+        <div class="portfolio-item" data-cat="laser">
+          <img class="portfolio-img" src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80"
+            alt="Laser project">
+          <div class="portfolio-info">
+            <div class="portfolio-cat">Découpe Laser</div>
+            <div class="portfolio-name">Structures Métalliques Complexes</div>
+          </div>
+        </div>
+        <div class="portfolio-item" data-cat="soudure">
+          <img class="portfolio-img" src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600&q=80"
+            alt="Welding project">
+          <div class="portfolio-info">
+            <div class="portfolio-cat">Soudure Laser</div>
+            <div class="portfolio-name">Assemblages de Précision</div>
+          </div>
+        </div>
+        <div class="portfolio-item" data-cat="pliage">
+          <img class="portfolio-img" src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&q=80"
+            alt="Bending project">
+          <div class="portfolio-info">
+            <div class="portfolio-cat">Pliage CNC</div>
+            <div class="portfolio-name">Châssis & Boîtiers Industriels</div>
+          </div>
+        </div>
+        <div class="portfolio-item" data-cat="tube">
+          <img class="portfolio-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80"
+            alt="Tube project">
+          <div class="portfolio-info">
+            <div class="portfolio-cat">Découpe Tube</div>
+            <div class="portfolio-name">Structures Tubulaires</div>
+          </div>
+        </div>
+        <div class="portfolio-item" data-cat="laser">
+          <img class="portfolio-img" src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80"
+            alt="Heavy laser">
+          <div class="portfolio-info">
+            <div class="portfolio-cat">Découpe Laser</div>
+            <div class="portfolio-name">Pièces Acier Épais 20mm</div>
+          </div>
+        </div>
+        <div class="portfolio-item" data-cat="soudure">
+          <img class="portfolio-img" src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600&q=80"
+            alt="Auto welding">
+          <div class="portfolio-info">
+            <div class="portfolio-cat">Soudure Laser</div>
+            <div class="portfolio-name">Composants Automobiles Sur Mesure</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── TESTIMONIALS ──────────────────────────────────── -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-eyebrow" data-fr="Avis Clients" data-en="Client Reviews">Avis Clients</div>
+      <h2 class="section-title" data-fr="Ce Qu'Ils <em>Pensent</em> De Nous"
+        data-en="What They <em>Think</em> About Us">Ce Qu'Ils <em>Pensent</em> De Nous</h2>
+      <div class="testimonials-grid fade-up" id="testimonialsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ── QUOTE ──────────────────────────────────────────── -->
+  <section id="quote">
+    <div class="container">
+      <div class="section-eyebrow" data-fr="Demande de Devis" data-en="Quote Request">Demande de Devis</div>
+      <h2 class="section-title" data-fr="Obtenez Votre Devis <em>Personnalisé</em>"
+        data-en="Get Your <em>Custom</em> Quote">Obtenez Votre Devis <em>Personnalisé</em></h2>
+      <div class="quote-grid">
+        <div class="quote-perks fade-up">
+          <div class="perk">
+            <div class="perk-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="perk-name">Réponse sous 24h</div>
+              <p class="perk-desc">Notre équipe technique vous recontacte rapidement.</p>
+            </div>
+          </div>
+          <div class="perk">
+            <div class="perk-icon">🆓</div>
+            <div>
+              <div class="perk-name">Devis Gratuit</div>
+              <p class="perk-desc">Sans engagement, analyse complète incluse.</p>
+            </div>
+          </div>
+          <div class="perk">
+            <div class="perk-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+              </svg>
+            </div>
+            <div>
+              <div class="perk-name">Fichiers DXF/DWG</div>
+              <p class="perk-desc">Envoyez vos plans techniques directement.</p>
+            </div>
+          </div>
+          <div class="perk">
+            <div class="perk-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="perk-name">Prototypage Rapide</div>
+              <p class="perk-desc">Validation avant production série disponible.</p>
+            </div>
+          </div>
+        </div>
+        <form class="quote-form fade-up" onsubmit="submitQuote(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Société <span>*</span></label>
+              <input type="text" class="form-input" placeholder="Khelfa Industries" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nom & Prénom <span>*</span></label>
+              <input type="text" class="form-input" placeholder="Ahmed Khelfa" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Email <span>*</span></label>
+              <input type="email" class="form-input" placeholder="contact@societe.dz" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Téléphone</label>
+              <input type="tel" class="form-input" placeholder="+213 6XX XX XX XX">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Service <span>*</span></label>
+            <select class="form-select" required>
+              <option value="">— Sélectionnez un service —</option>
+              <option>Découpe Laser</option>
+              <option>Soudure Laser</option>
+              <option>Découpe Tube Laser</option>
+              <option>Pliage de Précision</option>
+              <option>Fabrication Sur Mesure</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description du Projet <span>*</span></label>
+            <textarea class="form-textarea" placeholder="Décrivez votre besoin, matériaux, quantités, délais..."
+              required></textarea>
+          </div>
+          <button type="submit" class="btn-primary"
+            style="align-self:flex-start;border:none;font-size:.9rem;padding:1rem 2.5rem">
+            Envoyer ma demande →
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ────────────────────────────────────────── -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-eyebrow" data-fr="Nous Contacter" data-en="Contact Us">Nous Contacter</div>
+      <h2 class="section-title" data-fr="<em>Contactez</em>-Nous" data-en="<em>Contact</em> Us"><em>Contactez</em>-Nous
+      </h2>
+      <div class="contact-grid">
+        <div class="contact-block fade-up" id="contactBlock">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Adresse</div>
+              <div class="contact-info-value">Zone Industrielle, Sétif<br>Algérie — 19000</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Téléphone</div>
+              <div class="contact-info-value">
+                <a href="tel:+213666793553">+213 666 79 3553</a><br>
+                <a href="tel:+213774853903">+213 774 85 3903</a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-value">
+                <a href="mailto:info@kmc-metal.dz">info@kmc-metal.dz</a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Horaires</div>
+              <div class="contact-info-value">Dim–Jeu : 8h00 – 17h00</div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-up">
+              <div class="map-placeholder">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:8px">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Zone Industrielle, Sétif — Algérie
+              </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-copy">© 2025 KMC – Khelfa Metal Company. Tous droits réservés.</div>
+      <div class="footer-links">
+        <a href="#home">Accueil</a>
+        <a href="#services">Services</a>
+        <a href="#quote">Devis</a>
+        <a href="#contact">Contact</a>
+        <a href="/admin">CMS</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── SCRIPTS ────────────────────────────────────────── -->
+    <script>
+    /* --- Icon rendering --- */
+    function getIcon(name) {
+      const icons = {
+        bolt: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>',
+        fire: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>',
+        tool: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9l-7-7L3 5c-1.105 0-2 .895-2 2v10c0 1.105.895 2 2 2h10c1.105 0 2-.895 2-2V7l-7-7zM9 3L4 8h3v9h9V8h3l-5-5z"></path><path d="M9 9h6v6H9z"></path></svg>',
+        ruler: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>',
+        factory: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>',
+        handshake: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>',
+        target: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
+        cog: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" y1="22" x2="12" y2="12"></line></svg>',
+        diamond: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>',
+        check: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+      };
+      return icons[name] || name;
+    }
+    
+    /* --- Scroll navbar --- */
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbarWrap').classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    /* --- Mobile menu --- */
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('mobileMenu').classList.remove('open');
+    }
+
+    /* --- Global Data --- */
+    let currentLang = 'fr';
+    let cmsData = null;
+    let machinesData = [];
+
+    /* --- Language switcher --- */
+    function setLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('[data-fr]').forEach(el => {
+        const val = el.getAttribute('data-' + lang);
+        if (val) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+          else el.innerHTML = val;
+        }
+      });
+      document.getElementById('langFR').classList.toggle('active', lang === 'fr');
+      document.getElementById('langEN').classList.toggle('active', lang === 'en');
+
+      // Re-render components that depend on JS translation
+      if (cmsData) {
+        if (cmsData.machines && cmsData.machines.length > 0) {
+          renderMachines(cmsData.machines);
+          // Restore selected machine tab
+          const activeTab = document.querySelector('.tab-btn.active');
+          if (activeTab) {
+            const idx = parseInt(activeTab.getAttribute('data-idx'));
+            if (!isNaN(idx)) showMachine(idx, activeTab);
+          }
+        }
+      }
+    }
+
+    /* --- Fetch CMS Data --- */
+    async function initCMS() {
+      try {
+        const [general, contact, hero, about, machines, services, portfolio, testimonials] = await Promise.all([
+          fetch('data/settings/general.json').then(r => r.json()).catch(() => null),
+          fetch('data/settings/contact.json').then(r => r.json()).catch(() => null),
+          fetch('data/hero.json').then(r => r.json()).catch(() => null),
+          fetch('data/about.json').then(r => r.json()).catch(() => null),
+          fetch('data/machines.json').then(r => r.json()).catch(() => null),
+          fetch('data/services.json').then(r => r.json()).catch(() => null),
+          fetch('data/portfolio.json').then(r => r.json()).catch(() => null),
+          fetch('data/testimonials.json').then(r => r.json()).catch(() => null)
+        ]);
+
+        cmsData = {
+          general: general || {},
+          contact: contact || {},
+          hero: hero || {},
+          about: about || {},
+          machines: (machines && machines.items) ? machines.items : [],
+          services: (services && services.items) ? services.items : [],
+          portfolio: (portfolio && portfolio.items) ? portfolio.items : [],
+          testimonials: (testimonials && testimonials.items) ? testimonials.items : []
+        };
+
+        machinesData = cmsData.machines;
+        renderData();
+        setLang(currentLang);
+      } catch (err) {
+        console.error("Error loading CMS data:", err);
+      }
+    }
+
+    function renderData() {
+      const d = cmsData;
+
+      // General
+      if (d.general && d.general.company_name) {
+        const sub = document.getElementById('logoSub');
+        if (sub) {
+          sub.setAttribute('data-fr', d.general.company_name);
+          sub.setAttribute('data-en', d.general.company_name);
+          sub.textContent = d.general.company_name;
+        }
+      }
+
+      // Hero
+      if (d.hero && d.hero.line1_fr) {
+        document.getElementById('heroTitle').innerHTML = `
+            <span data-fr="${d.hero.line1_fr}" data-en="${d.hero.line1_en || d.hero.line1_fr}">${d.hero.line1_fr}</span><br>
+            <em><span data-fr="${d.hero.line2_fr}" data-en="${d.hero.line2_en || d.hero.line2_fr}">${d.hero.line2_fr}</span></em><br>
+            <span data-fr="${d.hero.line3_fr}" data-en="${d.hero.line3_en || d.hero.line3_fr}">${d.hero.line3_fr}</span>
+          `;
+        document.getElementById('heroSub').setAttribute('data-fr', d.hero.subtitle_fr);
+        document.getElementById('heroSub').setAttribute('data-en', d.hero.subtitle_en || d.hero.subtitle_fr);
+        document.getElementById('heroSub').textContent = d.hero.subtitle_fr;
+        if (d.hero.image) document.getElementById('heroImg').src = d.hero.image;
+      }
+
+      // Hero Stats
+      if (d.general && d.general.stat_projects) {
+        document.getElementById('heroStats').innerHTML = `
+            <div>
+              <div class="stat-num">${d.general.stat_projects}<span>+</span></div>
+              <div class="stat-label" data-fr="Projets Réalisés" data-en="Projects Done">Projets Réalisés</div>
+            </div>
+            <div>
+              <div class="stat-num">${d.general.stat_years}<span>+</span></div>
+              <div class="stat-label" data-fr="Ans d'Expérience" data-en="Years Experience">Ans d'Expérience</div>
+            </div>
+            <div>
+              <div class="stat-num">${d.general.stat_machines}</div>
+              <div class="stat-label" data-fr="Machines CNC" data-en="CNC Machines">Machines CNC</div>
+            </div>
+          `;
+      }
+
+      // About
+      if (d.about && d.about.text_fr) {
+           let pillarsHTML = '';
+          if (d.about && d.about.pillars) {
+            pillarsHTML = '<div class="about-pillars">' + d.about.pillars.map(p => `
+                  <div class="pillar">
+                    <div class="pillar-icon">${
+                      p.icon ? getIcon(p.icon) : ''
+                    }</div>
+                    <div class="pillar-name" data-fr="${p.name_fr}" data-en="${p.name_en || p.name_fr}">${p.name_fr}</div>
+                    <p class="pillar-text" data-fr="${p.text_fr}" data-en="${p.text_en || p.text_fr}">${p.text_fr}</p>
+                  </div>
+                `).join('') + '</div>';
+          }
+
+        document.getElementById('aboutGrid').innerHTML = `
+            <div class="about-img-wrap fade-up">
+              <img class="about-img" src="${d.about.image || ''}" alt="KMC Workshop" />
+              <div class="about-img-accent"></div>
+              <div class="about-tag">Est. ${d.general ? d.general.founded || 2012 : 2012}</div>
+            </div>
+            <div class="about-content fade-up">
+              <p class="section-desc" data-fr="${d.about.text_fr}" data-en="${d.about.text_en || d.about.text_fr}">${d.about.text_fr}</p>
+              ${pillarsHTML}
+            </div>
+          `;
+      }
+
+      // Machines
+      if (d.machines && d.machines.length > 0) {
+        renderMachines(d.machines);
+      }
+
+      // Services
+      if (d.services && d.services.length > 0) {
+        document.getElementById('servicesGrid').innerHTML = d.services.map(s => `
+            <div class="service-card fade-up">
+              <span class="service-icon">${
+                s.icon ? getIcon(s.icon) : ''
+              }</span>
+              <div class="service-name" data-fr="${s.name_fr}" data-en="${s.name_en || s.name_fr}">${s.name_fr}</div>
+              <p class="service-desc" data-fr="${s.desc_fr}" data-en="${s.desc_en || s.desc_fr}">${s.desc_fr}</p>
+              <ul class="service-specs">
+                ${s.specs ? s.specs.map(spec => `<li>${spec.item}</li>`).join('') : ''}
+              </ul>
+            </div>
+          `).join('');
+      }
+
+      // Portfolio
+      if (d.portfolio && d.portfolio.length > 0) {
+        document.getElementById('portfolioGrid').innerHTML = d.portfolio.map(p => `
+            <div class="portfolio-item" data-cat="${p.category}">
+              <img class="portfolio-img" src="${p.image}" alt="Project">
+              <div class="portfolio-info">
+                <div class="portfolio-cat">${(p.category || '').toUpperCase()}</div>
+                <div class="portfolio-name" data-fr="${p.title_fr}" data-en="${p.title_en || p.title_fr}">${p.title_fr}</div>
+              </div>
+            </div>
+          `).join('');
+      }
+
+
+      // Testimonials
+      if (d.testimonials && d.testimonials.length > 0) {
+        document.getElementById('testimonialsGrid').innerHTML = d.testimonials.map(t => {
+          const quote = currentLang === 'en' && t.quote_en ? t.quote_en : t.quote_fr;
+           const avatarSrc = t.avatar ? `<img src="${t.avatar}" class="testimonial-avatar" alt="${t.name}">` : `<div class="testimonial-avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>`;
+          const sectorHTML = t.sector ? `<div class="testimonial-sector">${t.sector}</div>` : '';
+
+          return `
+                <div class="testimonial-card">
+                  ${sectorHTML}
+                  <div class="testimonial-quote" data-fr="${t.quote_fr}" data-en="${t.quote_en || t.quote_fr}">${quote}</div>
+                  <div class="testimonial-author">
+                    ${avatarSrc}
+                    <div class="testimonial-info">
+                      <div class="testimonial-name">${t.name}</div>
+                      <div class="testimonial-role">${t.role} - ${t.company}</div>
+                    </div>
+                  </div>
+                </div>
+              `;
+        }).join('');
+      }
+
+      // Contact
+      if (d.contact && d.contact.phone1) {
+        const c = d.contact;
+        const phoneLinks = `
+            <a href="tel:${c.phone1.replace(/\s+/g, '')}">${c.phone1}</a><br>
+            ${c.phone2 ? `<a href="tel:${c.phone2.replace(/\s+/g, '')}">${c.phone2}</a>` : ''}
+          `;
+
+        let hoursHTML = 'Dim–Jeu : 8h00 – 17h00';
+        if (c.hours && c.hours.length > 0) {
+          hoursHTML = c.hours.map(h => `${h.days} : ${h.hours}`).join('<br>');
+        }
+
+        document.getElementById('contactBlock').innerHTML = `
+            <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+              <div>
+                <div class="contact-info-label" data-fr="Adresse" data-en="Address">Adresse</div>
+                <div class="contact-info-value">${(c.address || '').replace(/\n/g, '<br>')}</div>
+              </div>
+            </div>
+            <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+              <div>
+                <div class="contact-info-label" data-fr="Téléphone" data-en="Phone">Téléphone</div>
+                <div class="contact-info-value">${phoneLinks}</div>
+              </div>
+            </div>
+            <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+              <div>
+                <div class="contact-info-label" data-fr="Email" data-en="Email">Email</div>
+                <div class="contact-info-value"><a href="mailto:${c.email1}">${c.email1}</a></div>
+              </div>
+            </div>
+            <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+              <div>
+                <div class="contact-info-label" data-fr="Horaires" data-en="Hours">Horaires</div>
+                <div class="contact-info-value">${hoursHTML}</div>
+              </div>
+            </div>
+          `;
+      }
+
+      // Re-trigger observer for new fade-up elements
+      document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    }
+
+    function renderMachines(machines) {
+      // Render Tabs
+      const tabsHTML = machines.map((m, i) => `
+          <button class="tab-btn ${i === 0 ? 'active' : ''}" data-idx="${i}" onclick="showMachine(${i}, this)">
+            ${String(i + 1).padStart(2, '0')} — <span data-fr="${m.name_fr}" data-en="${m.name_en || m.name_fr}">${m.name_fr}</span>
+          </button>
+        `).join('');
+      document.getElementById('machinesTabs').innerHTML = tabsHTML;
+
+      // Render first machine
+      if (machines.length > 0) {
+        showMachine(0, document.querySelector('.tab-btn'));
+      }
+    }
+
+    function showMachine(i, btn) {
+      if (!machinesData || machinesData.length <= i) return;
+      const m = machinesData[i];
+      const name = currentLang === 'en' && m.name_en ? m.name_en : m.name_fr;
+      const desc = currentLang === 'en' && m.desc_en ? m.desc_en : m.desc_fr;
+
+      let specsHTML = '';
+      if (m.specs) {
+        specsHTML = m.specs.map(s => {
+          const key = currentLang === 'en' && s.key_en ? s.key_en : s.key_fr;
+          return `<div class="spec-row"><span class="spec-key">${key}</span><span class="spec-val">${s.value}</span></div>`;
+        }).join('');
+      }
+
+      document.getElementById('machineNum').textContent = String(i + 1).padStart(2, '0');
+      document.getElementById('machineBadge').textContent = m.badge || '';
+      document.getElementById('machineName').textContent = name;
+      document.getElementById('machineDesc').textContent = desc;
+      if (m.image) document.getElementById('machineImg').src = m.image;
+      document.getElementById('machineSpecs').innerHTML = specsHTML;
+
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
+
+    /* --- Portfolio filter --- */
+    function filterPortfolio(cat, btn) {
+      document.querySelectorAll('.portfolio-item').forEach(item => {
+        item.style.display = (cat === 'all' || item.dataset.cat === cat) ? 'block' : 'none';
+      });
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    /* --- Quote form --- */
+    function submitQuote(e) {
+      e.preventDefault();
+      alert(currentLang === 'en' ? 'Request sent! Our team will contact you within 24 hours.' : 'Demande envoyée ! Notre équipe vous recontactera sous 24h.');
+      e.target.reset();
+    }
+
+    /* --- Scroll fade-in --- */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {if (e.isIntersecting) {e.target.classList.add('visible');} });
+    }, {threshold: 0.1});
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Initialize CMS Data
+    initCMS();
+  </script>
+
+</body>
+
+</html>
