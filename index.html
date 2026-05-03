@@ -615,7 +615,8 @@
       border: 1px solid var(--border);
       width: fit-content;
       margin-bottom: 3rem;
-      overflow: hidden;
+      overflow-x: auto;
+      max-width: 100%;
     }
 
     .tab-btn {
@@ -1347,6 +1348,21 @@
       }
 
       .machine-specs {
+        grid-template-columns: 1fr;
+      }
+
+      .machines-tabs {
+        flex-wrap: wrap;
+        width: 100%;
+      }
+
+      .tab-btn {
+        flex: 1 1 45%;
+        border-right: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .machine-display {
         grid-template-columns: 1fr;
       }
     }
