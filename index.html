@@ -275,15 +275,17 @@
 
 
     /* ── HERO ─────────────────────────────────────────── */
-     #home {
-      min-height: 100vh;
-      height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      position: relative;
-      overflow: hidden;
-      padding-top: 0;
-    }
+#home {
+       min-height: 100vh;
+       height: 100vh;
+       display: grid;
+       grid-template-columns: 1fr 1fr;
+       position: relative;
+       overflow: hidden;
+       padding-top: 70px;
+       padding-left: 2rem;
+       padding-right: 2rem;
+     }
 
     .hero-left {
       display: flex;
@@ -1274,33 +1276,29 @@
       color: var(--accent);
     }
 
-    /* ── RESPONSIVE ──────────────────────────────────── */
+/* ── RESPONSIVE ──────────────────────────────────── */
      @media (max-width: 1024px) {
-      #home {
-        grid-template-columns: 1fr;
-        min-height: 100vh;
-        height: 100vh;
-      }
+       #home {
+         grid-template-columns: 1fr;
+         min-height: 100vh;
+         height: 100vh;
+         padding-top: 70px;
+       }
 
-      .hero-right {
-        display: none;
-      }
+       .hero-right {
+         display: none;
+       }
 
-      .hero-left {
-        padding: 4rem 2rem;
-        justify-content: center;
-      }
+       .about-grid,
+       .machine-display,
+       .quote-grid,
+       .contact-grid {
+         grid-template-columns: 1fr;
+         gap: 2.5rem;
+       }
 
-      .about-grid,
-      .machine-display,
-      .quote-grid,
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-      }
-
-      .services-grid {
-        grid-template-columns: 1fr 1fr;
+       .services-grid {
+         grid-template-columns: 1fr 1fr;
       }
 
       .portfolio-grid {
@@ -1313,7 +1311,7 @@
       }
     }
 
-    @media (max-width: 768px) {
+@media (max-width: 768px) {
       html, body {
         overflow-x: hidden;
       }
@@ -1331,7 +1329,7 @@
       }
 
       .hero-left {
-        padding-top: 5rem;
+        padding: 2rem;
       }
 
       .hero-stats {
